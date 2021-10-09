@@ -4,19 +4,19 @@ let saveNotebtn;
 let newNoteBtn;
 let noteList;
 
-if (window.location.pathname === '/Develop/notes.html') {
+if (window.location.pathname === '/notes') {
     noteTitle = document.querySelector ('.note-title');
     noteText = document.querySelector ('.note-textarea');
-    saveNotebtn = document.querySelector ('.save-note');
+    saveNoteBtn = document.querySelector ('.save-note');
     newNoteBtn = document.querySelector ('.new-note');
     noteList = document.querySelector ('.list-container .list-group');
 }
 
-const show = elem => {
+const show = (elem) => {
     elem.style.display = 'inline';
 };
 
-const hide = elem =>{
+const hide = (elem) =>{
     elem.style.display = 'none';
 };
 
@@ -30,7 +30,7 @@ fetch('/api/notes', {
     }
 });
 
-const saveNote = note =>
+const saveNote = (note) =>
 fetch('/api/notes', {
     method:'POST',
     headers: {
@@ -39,22 +39,22 @@ fetch('/api/notes', {
     body: JSON.stringify(note)
 });
 
-const deleteNote = id =>
+const deleteNote = (id) =>
 fetch (`/api/notes/${id}`,{
     method:'DELETE',
     headers: {
         'Content-Type': 'application/json'
-    }
+    },
 });
 
 const renderActiveNote = () => {
-    hide(saveNotebtn);
+    hide(saveNoteBtn);
 
     if (activeNote.id) {
         noteTitle.setAttribute('readonly', true);
         noteText.setAttribute('readonly', true);
-        noteTitle.value = '';
-        noteText.value = '';
+        noteTitle.value = activeNote.title;
+        noteText.value = activeNote.text;
     } else {
         noteTitle.removeAttribute('readonly');
         noteText.removeAttribute('readonly');
@@ -62,6 +62,7 @@ const renderActiveNote = () => {
         noteText.value = '';
     }
 };
+59
 
 const handleNoteSave = () => {
     const newNote = {

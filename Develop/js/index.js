@@ -4,7 +4,7 @@ let saveNotebtn;
 let newNoteBtn;
 let noteList;
 
-if (window.location.pathname === '/Develop/notes.html') {
+if (window.location.pathname === '/Develop/assets/notes.html') {
     noteTitle = document.querySelector ('.note-title');
     noteText = document.querySelector ('.note-textarea');
     saveNotebtn = document.querySelector ('.save-note');

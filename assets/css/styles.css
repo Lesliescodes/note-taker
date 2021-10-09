@@ -10,8 +10,8 @@ body{
 }
 
 .icons i {
-    margin-left: 16px;
-    margin-right: 16px;
+    margin-left: 15px;
+    margin-right: 15px;
     font-size: 1.5rem;
     cursor: pointer;
 }
@@ -28,22 +28,23 @@ body{
     resize: none;
     height: calc(100% - 63px);
     padding-top: 15px;
+    width: 2000px;
 }
 
 .note-title {
     height: 50px;
     margin-top: 13px;
-    font-size: 4rem;
+    font-size: 3rem;
 }
 
 .note-title:read-only,
 .note-textarea:read-only {
-    color: blueviolet;
+    color: 757575px;;
 }
 
 .list-container .card {
     height: calc(100vh - 75px);
-    border-bottom: darkslateblue;
+    border-bottom:none;
     border-bottom-right-radius:0 ;
     border-bottom-left-radius: 0;
 }
