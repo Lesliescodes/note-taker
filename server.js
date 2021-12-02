@@ -2,9 +2,10 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const database = require('./Develop/db/db.json');
-
-const mainPath = path.join(__dirname, './public')
-const db = path.join(__dirname, "./db")
+const apiRoutes = require('./routes/apiRoutes');
+const htmlRoutes = require('./routes/htmlRoutes');
+// const mainPath = path.join(__dirname, './public')
+// const db = path.join(__dirname, "./db")
 
 const app = express()
 const PORT = process.env.PORT || 3000;
@@ -20,7 +21,7 @@ app.get("/notes", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "notes.html"));
   });
   
-app.route("/api/notes")
+app.route("/routes/apiRoutes/noteRoutes.js")
         .get(function (req, res) {
             res.json(database);
         })
@@ -48,7 +49,7 @@ app.route("/api/notes")
             });
             res.json(newNote);
         
-app.delete("/api/notes/:id", function (req, res) {
+app.delete("routes/apiRoutes/noteRoutes.js:id", function (req, res) {
     let jsonFilePth = path.join(_dirname, "/db/db.json");
     for (let i = 0; i < database.length; i++) {
 
@@ -66,7 +67,7 @@ app.delete("/api/notes/:id", function (req, res) {
         }
     });
     res.json(database);
-);
+
 
 
 app.listen(PORT, () =>

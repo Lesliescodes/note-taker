@@ -3,15 +3,15 @@ var noteText;
 var saveNoteBtn;
 var newNoteBtn;
 var noteList;
-var PrettyError = require("pretty-error");
-var pe = new PrettyError();
+// var PrettyError = require("pretty-error");
+// var pe = new PrettyError();
 if (window.location.pathname === "/notes") {
   noteTitle = document.querySelector(".note-title");
   noteText = document.querySelector(".note-textarea");
   saveNoteBtn = document.querySelector(".save-note");
   newNoteBtn = document.querySelector(".new-note");
   noteList = document.querySelector(".list-container .list-group");
-
+}
   const show = (elem) => {
     elem.style.display = "inline";
   };
@@ -21,6 +21,7 @@ if (window.location.pathname === "/notes") {
   };
 
   let activeNote = {};
+  
   const getNotes = () =>
     fetch("/api/notes", {
       method: "GET",
@@ -39,7 +40,7 @@ if (window.location.pathname === "/notes") {
     });
 
   const deleteNote = (id) =>
-    fetch(`/api/notes/${id}`, {
+    fetch(`/api/notes${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -114,7 +115,7 @@ if (window.location.pathname === "/notes") {
 
     let noteListItems = [];
 
-    const creatLi = (text, delBtn = true) => {
+    const createLi = (text, delBtn = true) => {
       const liEl = document.createElement("li");
       liEl.classList.add("list-group-item");
 
@@ -135,56 +136,34 @@ if (window.location.pathname === "/notes") {
           "delete-note"
         );
         delBtnEl.addEventListener("click", handleNoteDelete);
+
         liEl.append(delBtnEl);
       }
 
       return liEl;
     };
 
-    // if (window.location.pathname === '/Develop/notes.html') {
-    //     noteTitle = document.querySelector('.note-title');
-    //     noteText = document.querySelector('.note-textarea');
-    //     saveNoteBtn = document.querySelector('.save-note');
-    //     newNoteBtn = document.querySelector('.new-note');
-    //     noteList = document.querySelector('.list-container .list-group');
-    // }
+    if (jsonNotes.lenght === 0) {
+      noteListItems.push(createLi("No saved Notes", false));
+    }
+    jsonNotes.forEach((note) => {
+      const li = createLi(note.title);
+      li.dataset.note = JSON.stringify(note);
 
-    const renderNoteList = async (notes) => {
-      let jsonNotes = await notes.json();
-      if (window.location.pathname === "/notes") {
-        noteList.forEach((el) => (el.innerHTML = ""));
-      }
-      if (window.location.pathname === "/notes") {
-        noteListItems.forEach((note) => noteList[0].append(note));
-      }
-    };
+      noteListItems.push(li);
+    });
 
-    liEl.append(delBtnEl);
+    if (window.location.pathname === "/notes") {
+      noteListItems.forEach((note) => noteList[0].append(note));
+    }
   };
-  // return liEl
-}
+  const getAndRenderNotes = () => getNotes().then(renderNoteList);
 
-if (jsonNotes.lenght === 0) {
-  noteListItems.push(createLi("No saved Notes", false));
-}
-jsonNotes.forEach((note) => {
-  const li = createLi(note.title);
-  li.dataset.note = JSON.stringify(note);
+  if (window.location.pathname === "/notes") {
+    saveNoteBtn.addEventListener("click", handleNoteSave);
+    newNoteBtn.addEventListener("click", handleNewNoteView);
+    noteTitle.addEventListener("keyup", handleRenderSaveBtn);
+    noteText.addEventListener("keyup", handleRenderSaveBtn);
+  }
 
-  noteListItems.push(li);
-});
-
-if (window.location.pathname === "/notes") {
-  noteListItems.forEach((note) => noteList[0].append(note));
-}
-
-const getAndRenderNotes = () => getNotes().then(renderNoteList);
-
-if (window.location.pathname === "/notes") {
-  saveNoteBtn.addEventListener("click", handleNoteSave);
-  newNoteBtn.addEventListener("click", handleNoteView);
-  noteTitle.addEventListener("click", handleRenderSaveBtn);
-  noteText.addEventListener("click", handleRenderSaveBtn);
-}
-
-getAndRenderNotes();
+  getAndRenderNotes();
