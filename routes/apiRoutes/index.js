@@ -1,14 +1,28 @@
-const router = require('express').Router();
+const router = require("express").Router();
+const db = require("../../db");
 
-//https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/routes
-// add our new route https://morioh.com/p/a1cd78288d90
-const notesRoutes = require('./noteRoutes')
+router.get("/notes", (req, res) => {
+  db
+    .readNotes()
+    .then((notes) => {
+      return res.json(notes);
+    })
+    .catch((err) => res.status(500).json(err));
+});
 
-//https://www.geeksforgeeks.org/express-js-router-use-function/
-//"The router.use() function uses the specified middleware function or functions. It basically mounts middleware for the routes which are being served by the specific router."
-router.use(notesRoutes);
+router.post("/notes", (req, res) => {
+  db
+    .createNote(req.body)
+    .then((note) => res.json(note))
+    .catch((err) => res.status(500).json(err));
+});
 
 
-//module.exports=router is mapping a router and all logic that's required to map (along with the right callbacks etc...)
-//https://stackoverflow.com/questions/56078508/why-is-module-exports-router-is-needed
+// router.delete("/notes/:id", (req, res) => {
+//   db
+//     .removeNote(req.params.id)
+//     .then(() => res.json({ ok: true }))
+//     .catch((err) => res.status(500).json(err));
+// });
+
 module.exports = router;

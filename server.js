@@ -1,75 +1,17 @@
 const express = require('express');
-const fs = require('fs');
-const path = require('path');
-const database = require('./Develop/db/db.json');
 const apiRoutes = require('./routes/apiRoutes');
 const htmlRoutes = require('./routes/htmlRoutes');
-// const mainPath = path.join(__dirname, './public')
-// const db = path.join(__dirname, "./db")
 
-const app = express()
+// Initialize the app and create a port
+const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.urlencoded({ extended: true }));
+// Set up body parsing, static, and route middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
+app.use('/api', apiRoutes);
+app.use('/', htmlRoutes);
 
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname,"public", "/index.html"));
-});
-app.get("/notes", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "notes.html"));
-  });
-  
-app.route("/routes/apiRoutes/noteRoutes.js")
-        .get(function (req, res) {
-            res.json(database);
-        })
-
-        .post(function (req, res) {
-            let jsonFilePath = path.join(__dirname, "/db/db.json");
-            let newNote = req.body;
-           
-            let highestId = 99;
-            for (let i = 0; i < database.length; i++) {
-                let individualNote = database[i];
-
-                if (individualNote.id > highestId) {
-                    highestId = individualNote.id;
-                }
-            }
-            newNote.id = highestid + 1;
-            database.push(newNote)
-            fs.writeFile(jsonFilePath, JSON.stringify(database), function (err) {
-
-                if (err) {
-                    return console.log(err);
-                }
-                console.log("Saved!");
-            });
-            res.json(newNote);
-        
-app.delete("routes/apiRoutes/noteRoutes.js:id", function (req, res) {
-    let jsonFilePth = path.join(_dirname, "/db/db.json");
-    for (let i = 0; i < database.length; i++) {
-
-        if (database[i].id == req.params.id) {
-            database.splice(i, 1);
-            break;
-        }
-    }
-    fs.writerFileSync(jsonFilePth, JSON.stringify(database), function (err) {
-
-        if (err) {
-            return console.log(err);
-        } else {
-            console.log("Deleted!");
-        }
-    });
-    res.json(database);
-
-
-
-app.listen(PORT, () =>
-    console.log(`successfully connected to http://localhost:${PORT}`
-    );
+// Start the server on the port
+app.listen(PORT, () => console.log(`Listening on PORT: ${PORT}`));
