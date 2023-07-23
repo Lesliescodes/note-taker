@@ -1,12 +1,21 @@
 const path = require('path');
 const router = require('express').Router();
 
-router.get('/notes', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../public/notes.html'));
+router.get ("/notes", (req,res) =>{
+    res.sendFile(path.join (__dirname, '../../Public/notes.html'));
 });
+router.get ("*", (req, res) =>{ res.sendFile(path.join (__dirname, '../../Public/index.html')); });
+module.exports = router; 
 
-router.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, '../../public/index.html'));
-})
+// const path = require('path');
+// const router = require('express').Router();
 
-module.exports = router;
+// router.get("/notes", (req, res) => {
+//     res.sendFile(path.join(__dirname, '../../public/notes.html'));
+// });
+
+// router.get("*", (req, res) => {
+//     res.sendFile(path.join(__dirname, '../../public/index.html'));
+// })
+
+// module.exports = router;
